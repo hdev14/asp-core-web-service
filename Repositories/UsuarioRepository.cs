@@ -17,31 +17,21 @@ namespace web_service.Repositories
 
         public async Task<bool> CreateUsuarioAsync(Usuario usuario)
         {
-            try
-            {
-                context.Usuarios.Add(usuario);
-                if (await this.SalvarDados())
-                    return true;
-            }
-            catch (DbUpdateException e)
-            {
-                throw;
-            }
-
-            return false;
+            context.Usuarios.Add(usuario);
+            return (await context.SaveChangesAsync() != 0);
         }
 
         public async Task<bool> UpdateUsuarioAsync(int id, Usuario u)
         {
 
-            var usuario = await context.Usuarios.FindAsync(id);
+            var usuario = await this.FindUsuarioAsync(id);
 
             if (usuario != null)
             {
                 usuario.Nome = u.Nome;
                 usuario.Username = u.Username;
-                if (await this.SalvarDados())
-                    return true;
+
+                return (await context.SaveChangesAsync() != 0);
             }
 
             return false;
@@ -54,8 +44,7 @@ namespace web_service.Repositories
             if (usuario != null)
             {
                 context.Usuarios.Remove(usuario);
-                if (await this.SalvarDados())
-                    return true;
+                return (await context.SaveChangesAsync() != 0);
             }
 
             return false;
@@ -69,11 +58,6 @@ namespace web_service.Repositories
         public async Task<List<Usuario>> GetUsuariosAsync()
         {
             return await context.Usuarios.ToListAsync();
-        }
-
-        protected async Task<bool> SalvarDados()
-        {
-            return await context.SaveChangesAsync() != 0;
         }
 
     }

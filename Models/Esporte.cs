@@ -8,7 +8,7 @@ namespace web_service.Models
         public string Nome { get; set; }
         public int NumeroJogadores { get; set; }
         public int NumeroJogadoresTime { get; set; }
-        public List<Pelada> Pelada { get; set; }
+        public virtual List<Pelada> Pelada { get; set; }
 
     }
 }

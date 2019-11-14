@@ -36,11 +36,11 @@ namespace web_service.Controllers
             if (usuarios != null)
                 return usuarios;
 
-            return NotFound();
+            return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Create(Usuario usuario)
+        public async Task<ActionResult> Create(Usuario usuario)
         {
             if (await repository.CreateUsuarioAsync(usuario))
                 return RedirectToAction("Get", new { id = usuario.Id });
@@ -75,10 +75,7 @@ namespace web_service.Controllers
                 });
             }
 
-            return StatusCode(500, new
-            {
-                message = "Não foi possível excluir o usuário."
-            });
+            return NotFound();
         }
 
     }

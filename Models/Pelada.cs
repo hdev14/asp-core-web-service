@@ -10,12 +10,12 @@ namespace web_service.Models
         public string Local { get; set; }
         
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
         public int EsporteId { get; set; }
-        public Esporte Esporte { get; set; }
+        public virtual Esporte Esporte { get; set; }
         
-        public List<Time> Times { get; set; }
+        public virtual List<Time> Times { get; set; }
 
     }
 }

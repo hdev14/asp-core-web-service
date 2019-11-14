@@ -5,6 +5,6 @@ namespace web_service.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public int TimeId { get; set; }
-        public Time Time { get; set; }
+        public virtual Time Time { get; set; }
     }
 }

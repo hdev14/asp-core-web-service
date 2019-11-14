@@ -8,6 +8,6 @@ namespace web_service.Models
         public string Nome { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public List<Pelada> Peladas { get; set; }
+        public virtual List<Pelada> Peladas { get; set; }
     }
 }
