@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using web_service.database;
+using web_service.Repositories;
 
 namespace web_service
 {
@@ -32,7 +33,8 @@ namespace web_service
             services.AddDbContext<WebServiceContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("MySqlString")));
 
-            services.AddScoped<WebServiceContext, WebServiceContext>();
+            services.AddScoped<UsuarioRepository, UsuarioRepository>();
+            services.AddScoped<EsporteRepository, EsporteRepository>();
 
         }
 

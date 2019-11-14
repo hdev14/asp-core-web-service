@@ -1,39 +1,37 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using web_service.database;
 using web_service.Models;
+using web_service.Repositories;
 
 namespace web_service.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
-        
-        private readonly WebServiceContext context;
-        
-        public UsuarioController(WebServiceContext context)
+        private readonly UsuarioRepository repository;
+
+        public UsuarioController(UsuarioRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> Get(int id)
-        {   
-            var usuario = await context.Usuarios.FindAsync(id);
-            
+        {
+            var usuario = await repository.FindUsuarioAsync(id);
+
             if (usuario != null)
                 return usuario;
 
             return NotFound();
         }
 
+        [HttpGet]
         public async Task<ActionResult<List<Usuario>>> Get()
         {
-            var usuarios = await context.Usuarios.ToListAsync();
+            var usuarios = await repository.GetUsuariosAsync();
 
             if (usuarios != null)
                 return usuarios;
@@ -43,69 +41,44 @@ namespace web_service.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Usuario>> Create(Usuario usuario)
-        {   
-            bool result = await this.RegistrarUsuario(usuario);
-            
-            if (result)
-                return CreatedAtAction("Get", new {id = usuario.Id}, usuario);
-    
-            return NotFound();
+        {
+            if (await repository.CreateUsuarioAsync(usuario))
+                return RedirectToAction("Get", new { id = usuario.Id });
+
+            return StatusCode(500, new
+            {
+                message = "Não foi possível registrar o usuário."
+            });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> Update(int id, Usuario usuario)
+        public async Task<ActionResult<Usuario>> Update(int id, Usuario u)
         {
-            var u = await context.Usuarios.FindAsync(id);
-            if (u != null)
+            if (await repository.UpdateUsuarioAsync(id, u))
+                return NoContent();
+
+            return StatusCode(500, new
             {
-                u.Nome = usuario.Nome;
-                u.Username = usuario.Username;
-
-                if (await this.SalvarDados())
-                    return CreatedAtAction("Get", new { id = u.Id}, u);
-            }
-
-            return NotFound();
+                message = "Não foi possível atualiza o usuário"
+            });
         }
-        
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> Delete(int id)
         {
-            var usuario = await context.Usuarios.FindAsync(id);
-            
-            if (usuario == null) 
-                return NotFound();
-
-            context.Usuarios.Remove(usuario);
-
-            if (await this.SalvarDados())
-                return Ok();
-
-            return NotFound();
-        }
-
-        private async Task<bool> RegistrarUsuario(Usuario usuario)
-        {   
-            
-            try
+            if (await repository.DeleteUsuarioAsync(id))
             {
-                context.Usuarios.Add(usuario);
-                if (await this.SalvarDados())
-                    return true;
-                
-            } 
-            catch (DbUpdateException e)
-            {
-                throw;
+                return Ok(new
+                {
+                    message = "Usuario excluído com sucesso !",
+                });
             }
-            
-            return false;
-        }
 
-        private async Task<bool> SalvarDados()
-        {
-            return await context.SaveChangesAsync() != 0;
+            return StatusCode(500, new
+            {
+                message = "Não foi possível excluir o usuário."
+            });
         }
 
     }
