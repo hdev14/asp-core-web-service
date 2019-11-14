@@ -52,9 +52,9 @@ namespace web_service.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> Update(int id, Usuario u)
+        public async Task<ActionResult<Usuario>> Update(int id, Usuario usuario)
         {
-            if (await repository.UpdateUsuarioAsync(id, u))
+            if (await repository.UpdateUsuarioAsync(id, usuario))
                 return NoContent();
 
             return StatusCode(500, new
