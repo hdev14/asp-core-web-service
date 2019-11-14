@@ -19,11 +19,7 @@ namespace web_service.Repositories
         public async Task<bool> CreateEsporteAsync(Esporte esporte)
         {
             context.Esportes.Add(esporte);
-
-            if (await context.SaveChangesAsync() != 0)
-                return true;
-
-            return false;
+            return (await context.SaveChangesAsync() != 0);
         }
 
         public async Task<bool> UpdateEsporteAsync(int id, Esporte e)
