@@ -50,7 +50,7 @@ namespace web_service.Controllers
             {
                 return BadRequest(new
                 {
-                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                    error = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
@@ -69,7 +69,7 @@ namespace web_service.Controllers
             {
                 return BadRequest(new
                 {
-                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                    error = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
@@ -88,7 +88,7 @@ namespace web_service.Controllers
             {
                 return BadRequest(new
                 {
-                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                    error = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
