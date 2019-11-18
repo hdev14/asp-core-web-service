@@ -35,6 +35,9 @@ namespace web_service
 
             services.AddScoped<UsuarioRepository, UsuarioRepository>();
             services.AddScoped<EsporteRepository, EsporteRepository>();
+            services.AddScoped<AtletaRepository, AtletaRepository>();
+            services.AddScoped<TimeRepository, TimeRepository>();
+            services.AddScoped<PeladaRepository, PeladaRepository>();
 
         }
 
