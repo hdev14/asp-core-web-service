@@ -64,7 +64,7 @@ namespace web_service.Controllers
             try
             {
                 if (await repository.UpdateUsuarioAsync(id, usuario))
-                    return NoContent();
+                    return Ok(new { message = "Usuário atualizado com sucesso !" });
             }
             catch (Exception e)
             {

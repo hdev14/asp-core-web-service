@@ -63,7 +63,7 @@ namespace web_service.Controllers
             try
             {
                 if (await repository.UpdateTimeAsync(id, time))
-                    return RedirectToAction("Get", new { id = id });
+                    return Ok(new { message = "Time atualizado com sucesso !" });
             }
             catch (Exception e)
             {

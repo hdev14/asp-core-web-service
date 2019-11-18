@@ -63,7 +63,7 @@ namespace web_service.Controllers
             try
             {
                 if (await repository.UpdateAtletaAsync(id, atleta))
-                    return NoContent();
+                    return Ok(new { message = "Atleta atualizado com sucesso !" });
             }
             catch (Exception e)
             {

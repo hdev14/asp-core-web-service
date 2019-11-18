@@ -64,7 +64,7 @@ namespace web_service.Controllers
             try
             {
                 if (await repository.UpdateEsporteAsync(id, esporte))
-                    return RedirectToAction("Get", new { id = esporte.Id });
+                    return Ok(new { message = "Esporte atualizado com sucesso !" });
             }
             catch (Exception e)
             {

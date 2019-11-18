@@ -64,7 +64,7 @@ namespace web_service.Controllers
             try
             {
                 if (await repository.UpdatePeladaAsync(id, pelada))
-                    return RedirectToAction("Get", new { id = id });
+                    return Ok(new { message = "Pelada atualizada com sucesso !" });
             }
             catch (Exception e)
             {
