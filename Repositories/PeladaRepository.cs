@@ -15,10 +15,10 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreatePeladaAsync(Pelada pelada)
+        public async Task CreatePeladaAsync(Pelada pelada)
         {
             context.Peladas.Add(pelada);
-            return (await context.SaveChangesAsync() != 0);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePeladaAsync(int id, Pelada p)
@@ -29,8 +29,8 @@ namespace web_service.Repositories
                 pelada.Titulo = p.Titulo;
                 pelada.Descricao = p.Descricao;
                 pelada.Local = p.Local;
-
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -42,7 +42,8 @@ namespace web_service.Repositories
             if (pelada != null)
             {
                 context.Peladas.Remove(pelada);
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;

@@ -15,10 +15,10 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreateUsuarioAsync(Usuario usuario)
+        public async Task CreateUsuarioAsync(Usuario usuario)
         {
             context.Usuarios.Add(usuario);
-            return (await context.SaveChangesAsync() != 0);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateUsuarioAsync(int id, Usuario u)
@@ -30,8 +30,8 @@ namespace web_service.Repositories
             {
                 usuario.Nome = u.Nome;
                 usuario.Username = u.Username;
-
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -44,7 +44,8 @@ namespace web_service.Repositories
             if (usuario != null)
             {
                 context.Usuarios.Remove(usuario);
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;

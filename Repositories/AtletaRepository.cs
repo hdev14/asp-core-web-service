@@ -16,10 +16,10 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreateAtletaAsync(Atleta atleta)
+        public async Task CreateAtletaAsync(Atleta atleta)
         {
             context.Atletas.Add(atleta);
-            return (await context.SaveChangesAsync() != 0);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateAtletaAsync(int id, Atleta a)
@@ -28,7 +28,8 @@ namespace web_service.Repositories
             if (atleta != null)
             {
                 atleta.Nome = a.Nome;
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -40,7 +41,8 @@ namespace web_service.Repositories
             if (atleta != null)
             {
                 context.Atletas.Remove(atleta);
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;

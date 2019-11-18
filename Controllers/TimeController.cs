@@ -8,7 +8,7 @@ namespace web_service.Controllers
 {
     public class TimeController : ControllerBase
     {
-        private readonly TimeRepository repository
+        private readonly TimeRepository repository;
         public TimeController(TimeRepository repository)
         {
             this.repository = repository;
@@ -38,13 +38,8 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Time time)
         {
-            if (await repository.CreateTimeAsync(time))
-                return RedirectToAction("Get", new { id = time.Id });
-
-            return StatusCode(500, new
-            {
-                message = "Não foi possível registrar o time."
-            });
+            await repository.CreateTimeAsync(time);
+            return RedirectToAction("Get", new { id = time.Id });
         }
 
         [HttpPut("{id}")]
@@ -53,8 +48,9 @@ namespace web_service.Controllers
             if (await repository.UpdateTimeAsync(id, time))
                 return RedirectToAction("Get", new { id = id });
 
-            return StatusCode(500, new {
-                message = "Não foi possível atualizar o time."
+            return NotFound(new
+            {
+                message = "Time não encontrado !"
             });
         }
 
@@ -63,12 +59,16 @@ namespace web_service.Controllers
         {
             if (await repository.DeleteTimeAsync(id))
             {
-                return Ok(new {
+                return Ok(new
+                {
                     message = "Time excluído com sucesso !"
                 });
             }
 
-            return NotFound();
+            return NotFound(new
+            {
+                message = "Time não encontrado !"
+            });
         }
     }
 }

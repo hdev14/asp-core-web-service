@@ -11,7 +11,7 @@ namespace web_service.Controllers
     public class AtletaController : ControllerBase
     {
         private readonly AtletaRepository repository;
-        
+
         public AtletaController(AtletaRepository repository)
         {
             this.repository = repository;
@@ -21,7 +21,7 @@ namespace web_service.Controllers
         public async Task<ActionResult<Atleta>> Get(int id)
         {
             var atleta = await repository.FindAtletaAsync(id);
-            
+
             if (atleta != null)
                 return atleta;
 
@@ -41,12 +41,8 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Atleta atleta)
         {
-            if (await repository.CreateAtletaAsync(atleta))
-                return RedirectToAction("Get", new {id = atleta.Id });
-
-            return StatusCode(500, new {
-                message = "Não foi possível registrar o atleta."
-            });
+            await repository.CreateAtletaAsync(atleta);
+            return RedirectToAction("Get", new { id = atleta.Id });
         }
 
         [HttpPut("{id}")]
@@ -55,8 +51,9 @@ namespace web_service.Controllers
             if (await repository.UpdateAtletaAsync(id, atleta))
                 return NoContent();
 
-            return StatusCode(500, new {
-                message = "Não foi possível atualizar o atleta."
+            return NotFound(new
+            {
+                message = "Atleta não encontrado !"
             });
         }
 
@@ -65,12 +62,16 @@ namespace web_service.Controllers
         {
             if (await repository.DeleteAtletaAsync(id))
             {
-                return Ok(new {
+                return Ok(new
+                {
                     message = "Atleta excluído com sucesso !"
                 });
             }
 
-            return NotFound();
+            return NotFound(new
+            {
+                message = "Atleta não encontrado !"
+            });
         }
     }
 }

@@ -16,10 +16,10 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreateEsporteAsync(Esporte esporte)
+        public async Task CreateEsporteAsync(Esporte esporte)
         {
             context.Esportes.Add(esporte);
-            return (await context.SaveChangesAsync() != 0);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateEsporteAsync(int id, Esporte e)
@@ -31,8 +31,8 @@ namespace web_service.Repositories
                 esporte.Nome = e.Nome;
                 esporte.NumeroJogadores = e.NumeroJogadores;
                 esporte.NumeroJogadoresTime = e.NumeroJogadoresTime;
-
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -45,7 +45,8 @@ namespace web_service.Repositories
             if (esporte != null)
             {
                 context.Esportes.Remove(esporte);
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;

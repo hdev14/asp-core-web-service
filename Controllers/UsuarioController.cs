@@ -42,13 +42,8 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Usuario usuario)
         {
-            if (await repository.CreateUsuarioAsync(usuario))
-                return RedirectToAction("Get", new { id = usuario.Id });
-
-            return StatusCode(500, new
-            {
-                message = "Não foi possível registrar o usuário."
-            });
+            await repository.CreateUsuarioAsync(usuario);
+            return RedirectToAction("Get", new { id = usuario.Id });
         }
 
         [HttpPut("{id}")]
@@ -57,9 +52,9 @@ namespace web_service.Controllers
             if (await repository.UpdateUsuarioAsync(id, usuario))
                 return NoContent();
 
-            return StatusCode(500, new
+            return NotFound(new
             {
-                message = "Não foi possível atualiza o usuário"
+                message = "Usuário não encontrado !"
             });
         }
 
@@ -75,7 +70,10 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound();
+            return NotFound(new
+            {
+                message = "Usuário não encontrado !"
+            });
         }
 
     }

@@ -42,13 +42,8 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Pelada pelada)
         {
-            if (await repository.CreatePeladaAsync(pelada))
-                return RedirectToAction("Get", new { id = pelada.Id });
-
-            return StatusCode(500, new
-            {
-                message = "Não foi possível registrar a pelada."
-            });
+            await repository.CreatePeladaAsync(pelada);
+            return RedirectToAction("Get", new { id = pelada.Id });
         }
 
         [HttpPut("{id}")]
@@ -57,8 +52,9 @@ namespace web_service.Controllers
             if (await repository.UpdatePeladaAsync(id, pelada))
                 return RedirectToAction("Get", new { id = id });
 
-            return StatusCode(500, new {
-                message = "Não foi possível atualizar a pelada."
+            return NotFound(new
+            {
+                message = "Pelada não encontrada !"
             });
         }
 
@@ -67,12 +63,16 @@ namespace web_service.Controllers
         {
             if (await repository.DeletePeladaAsync(id))
             {
-                return Ok(new {
+                return Ok(new
+                {
                     message = "Pelada excluída com sucesso !"
                 });
             }
 
-            return NotFound();
+            return NotFound(new
+            {
+                message = "Pelada não encontrada !"
+            });
         }
     }
 }

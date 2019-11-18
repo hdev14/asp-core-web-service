@@ -42,13 +42,8 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Esporte esporte)
         {
-            if (await repository.CreateEsporteAsync(esporte))
-                return RedirectToAction("Get", new { id = esporte.Id });
-
-            return StatusCode(500, new
-            {
-                message = "Não foi possível registrar o esporte."
-            });
+            await repository.CreateEsporteAsync(esporte);
+            return RedirectToAction("Get", new { id = esporte.Id });
         }
 
         [HttpPut("{id}")]
@@ -57,16 +52,16 @@ namespace web_service.Controllers
             if (await repository.UpdateEsporteAsync(id, esporte))
                 return RedirectToAction("Get", new { id = esporte.Id });
 
-            return StatusCode(500, new
+            return NotFound(new
             {
-                message = "Não foi possível atualizar o esporte."
+                message = "Esporte não encontrado !"
             });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await repository.DeleteEsporteAsync(id)) 
+            if (await repository.DeleteEsporteAsync(id))
             {
                 return Ok(new
                 {
@@ -74,7 +69,10 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound();
+            return NotFound(new
+            {
+                message = "Esporte não encontrado !"
+            });
         }
 
     }

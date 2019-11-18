@@ -15,10 +15,10 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreateTimeAsync(Time time)
+        public async Task CreateTimeAsync(Time time)
         {
             context.Times.Add(time);
-            return (await context.SaveChangesAsync() != 0);
+            await context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdateTimeAsync(int id, Time t)
@@ -27,7 +27,8 @@ namespace web_service.Repositories
             if (time != null)
             {
                 time.Nome = t.Nome;
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
@@ -39,7 +40,8 @@ namespace web_service.Repositories
             if (time != null)
             {
                 context.Times.Remove(time);
-                return (await context.SaveChangesAsync() != 0);
+                await context.SaveChangesAsync();
+                return true;
             }
 
             return false;
