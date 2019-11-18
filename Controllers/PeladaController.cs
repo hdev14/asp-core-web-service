@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -42,37 +43,57 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Pelada pelada)
         {
-            await repository.CreatePeladaAsync(pelada);
+            try
+            {
+                await repository.CreatePeladaAsync(pelada);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
             return RedirectToAction("Get", new { id = pelada.Id });
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, Pelada pelada)
         {
-            if (await repository.UpdatePeladaAsync(id, pelada))
-                return RedirectToAction("Get", new { id = id });
-
-            return NotFound(new
+            try
             {
-                message = "Pelada não encontrada !"
-            });
+                if (await repository.UpdatePeladaAsync(id, pelada))
+                    return RedirectToAction("Get", new { id = id });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
+            return NotFound(new { message = "Pelada não encontrada !" });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await repository.DeletePeladaAsync(id))
+            try
             {
-                return Ok(new
+                if (await repository.DeletePeladaAsync(id))
+                    return Ok(new { message = "Pelada excluída com sucesso !" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
                 {
-                    message = "Pelada excluída com sucesso !"
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
-            return NotFound(new
-            {
-                message = "Pelada não encontrada !"
-            });
+            return NotFound(new { message = "Pelada não encontrada !" });
         }
     }
 }

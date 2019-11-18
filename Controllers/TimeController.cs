@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using web_service.Models;
 using web_service.Repositories;
 
 namespace web_service.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TimeController : ControllerBase
     {
         private readonly TimeRepository repository;
@@ -38,37 +42,57 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Time time)
         {
-            await repository.CreateTimeAsync(time);
+            try
+            {
+                await repository.CreateTimeAsync(time);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
             return RedirectToAction("Get", new { id = time.Id });
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, Time time)
         {
-            if (await repository.UpdateTimeAsync(id, time))
-                return RedirectToAction("Get", new { id = id });
-
-            return NotFound(new
+            try
             {
-                message = "Time não encontrado !"
-            });
+                if (await repository.UpdateTimeAsync(id, time))
+                    return RedirectToAction("Get", new { id = id });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
+            return NotFound(new { message = "Time não encontrado !" });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await repository.DeleteTimeAsync(id))
+            try
             {
-                return Ok(new
+                if (await repository.DeleteTimeAsync(id))
+                    return Ok(new { message = "Time excluído com sucesso !" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
                 {
-                    message = "Time excluído com sucesso !"
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
-            return NotFound(new
-            {
-                message = "Time não encontrado !"
-            });
+            return NotFound(new { message = "Time não encontrado !" });
         }
     }
 }

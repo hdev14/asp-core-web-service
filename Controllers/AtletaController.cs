@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -41,37 +42,57 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Atleta atleta)
         {
-            await repository.CreateAtletaAsync(atleta);
+            try
+            {
+                await repository.CreateAtletaAsync(atleta);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
             return RedirectToAction("Get", new { id = atleta.Id });
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, Atleta atleta)
         {
-            if (await repository.UpdateAtletaAsync(id, atleta))
-                return NoContent();
-
-            return NotFound(new
+            try
             {
-                message = "Atleta não encontrado !"
-            });
+                if (await repository.UpdateAtletaAsync(id, atleta))
+                    return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
+            return NotFound(new { message = "Atleta não encontrado !" });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await repository.DeleteAtletaAsync(id))
+            try
             {
-                return Ok(new
+                if (await repository.DeleteAtletaAsync(id))
+                    return Ok(new { message = "Atleta excluído com sucesso !" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
                 {
-                    message = "Atleta excluído com sucesso !"
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
-            return NotFound(new
-            {
-                message = "Atleta não encontrado !"
-            });
+            return NotFound(new { message = "Atleta não encontrado !" });
         }
     }
 }

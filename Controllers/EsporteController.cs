@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -42,15 +43,36 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Esporte esporte)
         {
-            await repository.CreateEsporteAsync(esporte);
+            try
+            {
+                await repository.CreateEsporteAsync(esporte);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
             return RedirectToAction("Get", new { id = esporte.Id });
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, Esporte esporte)
         {
-            if (await repository.UpdateEsporteAsync(id, esporte))
-                return RedirectToAction("Get", new { id = esporte.Id });
+            try
+            {
+                if (await repository.UpdateEsporteAsync(id, esporte))
+                    return RedirectToAction("Get", new { id = esporte.Id });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
 
             return NotFound(new
             {
@@ -61,19 +83,20 @@ namespace web_service.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await repository.DeleteEsporteAsync(id))
+            try
             {
-                return Ok(new
+                if (await repository.DeleteEsporteAsync(id))
+                    return Ok(new { message = "Esporte excluído com sucesso !" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
                 {
-                    message = "Esporte excluído com sucesso !"
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
-            return NotFound(new
-            {
-                message = "Esporte não encontrado !"
-            });
+            return NotFound(new { message = "Esporte não encontrado !" });
         }
-
     }
 }

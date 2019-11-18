@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -42,38 +43,59 @@ namespace web_service.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Usuario usuario)
         {
-            await repository.CreateUsuarioAsync(usuario);
+            try
+            {
+                await repository.CreateUsuarioAsync(usuario);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
             return RedirectToAction("Get", new { id = usuario.Id });
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Usuario>> Update(int id, Usuario usuario)
         {
-            if (await repository.UpdateUsuarioAsync(id, usuario))
-                return NoContent();
-
-            return NotFound(new
+            try
             {
-                message = "Usuário não encontrado !"
-            });
+                if (await repository.UpdateUsuarioAsync(id, usuario))
+                    return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
+                });
+            }
+
+            return NotFound(new { message = "Usuário não encontrado !" });
         }
 
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> Delete(int id)
         {
-            if (await repository.DeleteUsuarioAsync(id))
+            try
             {
-                return Ok(new
+                if (await repository.DeleteUsuarioAsync(id))
+                    return Ok(new { message = "Usuario excluído com sucesso !" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
                 {
-                    message = "Usuario excluído com sucesso !",
+                    message = string.Format("Parâmetros inválidos - Error {0}", e.Message)
                 });
             }
 
-            return NotFound(new
-            {
-                message = "Usuário não encontrado !"
-            });
+
+            return NotFound(new { message = "Usuário não encontrado !" });
         }
 
     }

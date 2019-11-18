@@ -14,7 +14,7 @@ namespace web_service.Models
 
         public int EsporteId { get; set; }
         public virtual Esporte Esporte { get; set; }
-        
+
         public virtual List<Time> Times { get; set; }
 
     }
