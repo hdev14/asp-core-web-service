@@ -30,8 +30,9 @@ namespace web_service
         {
             services.AddControllers();
             
-            services.AddDbContext<WebServiceContext>(
-                options => options.UseMySql(Configuration.GetConnectionString("MySqlString")));
+            string connectionString = Configuration["connectionString"];
+
+            services.AddDbContext<WebServiceContext>(options => options.UseMySql(connectionString));
 
             services.AddScoped<UsuarioRepository, UsuarioRepository>();
             services.AddScoped<EsporteRepository, EsporteRepository>();
