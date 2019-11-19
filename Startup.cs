@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using web_service.database;
 using web_service.Repositories;
 
@@ -28,17 +31,41 @@ namespace web_service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            
+            // Configuration connection string
             string connectionString = Configuration["connectionString"];
-
             services.AddDbContext<WebServiceContext>(options => options.UseMySql(connectionString));
 
+            // DI
             services.AddScoped<UsuarioRepository, UsuarioRepository>();
             services.AddScoped<EsporteRepository, EsporteRepository>();
             services.AddScoped<AtletaRepository, AtletaRepository>();
             services.AddScoped<TimeRepository, TimeRepository>();
             services.AddScoped<PeladaRepository, PeladaRepository>();
+
+            // JWT Bearer Authentication
+
+            services.AddAuthentication(authOptions =>
+            {
+                authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwtBearerOptions =>
+            {
+                jwtBearerOptions.RequireHttpsMetadata = false;
+                jwtBearerOptions.SaveToken = true;
+
+                var key = Encoding.ASCII.GetBytes(Secret.KEY);
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            services.AddCors();
+            services.AddControllers();
 
         }
 
@@ -49,13 +76,18 @@ namespace web_service
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseCors(corsPolicy =>
+            {
+                corsPolicy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
+
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            app.UseHttpsRedirection();
-            
-            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
