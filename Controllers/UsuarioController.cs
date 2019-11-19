@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
 using web_service.Repositories;
+using web_service.Services.Auth;
 
 namespace web_service.Controllers
 {
@@ -45,6 +46,7 @@ namespace web_service.Controllers
         {
             try
             {
+                usuario.Password = PasswordManager.GeneratePasswordHash(usuario.Password);
                 await repository.CreateUsuarioAsync(usuario);
             }
             catch (Exception e)
