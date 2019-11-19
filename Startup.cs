@@ -49,9 +49,12 @@ namespace web_service
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
