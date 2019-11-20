@@ -8,8 +8,6 @@ namespace web_service.Repositories
 {
     public class AthleteRepository
     {
-        
-        /*
         private readonly WebServiceContext context;
         
         public AthleteRepository(WebServiceContext context)
@@ -17,18 +15,18 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task CreateModelAsync(Athlete a)
+        public async Task CreateAthleteAsync(Athlete a)
         {
-            context.Atletas.Add(a);
+            context.Athlete.Add(a);
             await context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateModelAsync(int id, Athlete a)
+        public async Task<bool> UpdateAthleteAsync(int id, Athlete a)
         {   
-            var atleta = await this.FindModelAsync(id);
-            if (atleta != null)
+            var athlete = await this.FindAthleteAsync(id);
+            if (athlete != null)
             {
-                atleta.Nome = a.Nome;
+                athlete.Name = a.Name;
                 await context.SaveChangesAsync();
                 return true;
             }
@@ -36,12 +34,12 @@ namespace web_service.Repositories
             return false;
         }
 
-        public async Task<bool> DeleteModelAsync(int id)
+        public async Task<bool> DeleteAthleteAsync(int id)
         {
-            var atleta = (Atleta) await this.FindModelAsync(id);
-            if (atleta != null)
+            var athlete = await this.FindAthleteAsync(id);
+            if (athlete != null)
             {
-                context.Atletas.Remove(atleta);
+                context.Athlete.Remove(athlete);
                 await context.SaveChangesAsync();
                 return true;
             }
@@ -49,15 +47,14 @@ namespace web_service.Repositories
             return false;
         }
 
-        public async Task<Athlete> FindModelAsync(int id)
+        public async Task<Athlete> FindAthleteAsync(int id)
         {
-            return await context.Atletas.FindAsync(id);
+            return await context.Athlete.FindAsync(id);
         }
 
-        public async Task<List<Athlete>> FindModelsAsync()
+        public async Task<List<Athlete>> FindAthletesAsync()
         {
             return await context.Athlete.ToListAsync();
         }
-        */
     }
 }

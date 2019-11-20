@@ -1,4 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using web_service.Models;
+using web_service.Repositories;
 
 namespace web_service.Controllers
 {
@@ -6,41 +11,41 @@ namespace web_service.Controllers
     [Route("api/[controller]")]
     public class AthleteController : ControllerBase
     {   
-        /*
-        private readonly AtletaRepository repository;
+        
+        private readonly AthleteRepository repository;
 
-        public AtletaController(AtletaRepository repository)
+        public AthleteController(AthleteRepository repository)
         {
             this.repository = repository;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Atleta>> Get(int id)
+        public async Task<ActionResult<Athlete>> Get(int id)
         {
-            var atleta = await repository.FindAtletaAsync(id);
+            var athlete = await repository.FindAthleteAsync(id);
 
-            if (atleta != null)
-                return atleta;
+            if (athlete != null)
+                return athlete;
 
             return NotFound();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Atleta>>> Get()
+        public async Task<ActionResult<List<Athlete>>> Get()
         {
-            var atletas = await repository.GetAtletasAsync();
-            if (atletas != null)
-                return atletas;
+            var athlete = await repository.FindAthletesAsync();
+            if (athlete != null)
+                return athlete;
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Atleta atleta)
+        public async Task<ActionResult> Create(Athlete athlete)
         {
             try
             {
-                await repository.CreateAtletaAsync(atleta);
+                await repository.CreateAthleteAsync(athlete);
             }
             catch (Exception e)
             {
@@ -50,15 +55,15 @@ namespace web_service.Controllers
                 });
             }
 
-            return RedirectToAction("Get", new { id = atleta.Id });
+            return RedirectToAction("Get", new { id = athlete.Id });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Atleta atleta)
+        public async Task<ActionResult> Update(int id, Athlete athlete)
         {
             try
             {
-                if (await repository.UpdateAtletaAsync(id, atleta))
+                if (await repository.UpdateAthleteAsync(id, athlete))
                     return Ok(new { message = "Atleta atualizado com sucesso !" });
             }
             catch (Exception e)
@@ -77,7 +82,7 @@ namespace web_service.Controllers
         {
             try
             {
-                if (await repository.DeleteAtletaAsync(id))
+                if (await repository.DeleteAthleteAsync(id))
                     return Ok(new { message = "Atleta excluído com sucesso !" });
             }
             catch (Exception e)
@@ -90,6 +95,5 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Atleta não encontrado !" });
         }
-        */
     }
 }

@@ -1,51 +1,54 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CryptSharp;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using web_service.Models;
 using web_service.Repositories;
+using web_service.Services.Auth;
 
 namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TimeController : ControllerBase
+    public class UserController : ControllerBase
     {
-        /*
-        private readonly TimeRepository repository;
-        public TimeController(TimeRepository repository)
+        private readonly UserRepository repository;
+
+        public UserController(UserRepository repository)
         {
             this.repository = repository;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Time>> Get(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
-            var time = await repository.FindTimeAsync(id);
-            if (time != null)
-                return time;
+            var user = await repository.FindUserAsync(id);
+
+            if (user != null)
+                return user;
 
             return NotFound();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Time>>> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
-            var times = await repository.GetTimesAsync();
+            var users = await repository.FindUsersAsync();
 
-            if (times != null)
-                return times;
+            if (users != null)
+                return users;
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Time time)
+        public async Task<ActionResult> Create(User user)
         {
             try
             {
-                await repository.CreateTimeAsync(time);
+                user.Password = Crypter.Blowfish.Crypt(user.Password);
+                await repository.CreateUsuarioAsync(user);
             }
             catch (Exception e)
             {
@@ -55,16 +58,16 @@ namespace web_service.Controllers
                 });
             }
 
-            return RedirectToAction("Get", new { id = time.Id });
+            return RedirectToAction("Get", new { id = user.Id });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Time time)
+        public async Task<ActionResult<User>> Update(int id, User user)
         {
             try
             {
-                if (await repository.UpdateTimeAsync(id, time))
-                    return Ok(new { message = "Time atualizado com sucesso !" });
+                if (await repository.UpdateUserAsync(id, user))
+                    return Ok(new { message = "Usuário atualizado com sucesso !" });
             }
             catch (Exception e)
             {
@@ -74,16 +77,17 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound(new { message = "Time não encontrado !" });
+            return NotFound(new { message = "Usuário não encontrado !" });
         }
+
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult<User>> Delete(int id)
         {
             try
             {
-                if (await repository.DeleteTimeAsync(id))
-                    return Ok(new { message = "Time excluído com sucesso !" });
+                if (await repository.DeleteUserAsync(id))
+                    return Ok(new { message = "Usuario excluído com sucesso !" });
             }
             catch (Exception e)
             {
@@ -93,8 +97,8 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound(new { message = "Time não encontrado !" });
+            return NotFound(new { message = "Usuário não encontrado !" });
         }
-        */
+
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using web_service.Models;
 using web_service.Repositories;
 
@@ -9,43 +10,42 @@ namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PeladaController : ControllerBase
+    public class TimeController : ControllerBase
     {
-        private readonly PeladaRepository repository;
 
-        public PeladaController(PeladaRepository repository)
+        private readonly TeamRepository repository;
+        public TimeController(TeamRepository repository)
         {
             this.repository = repository;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pelada>> Get(int id)
+        public async Task<ActionResult<Team>> Get(int id)
         {
-            var pelada = await repository.FindPeladaAsync(id);
-
-            if (pelada != null)
-                return pelada;
+            var team = await repository.FindTeamAsync(id);
+            if (team != null)
+                return team;
 
             return NotFound();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pelada>>> Get()
+        public async Task<ActionResult<List<Team>>> Get()
         {
-            var peladas = await repository.FindPeladasAsync();
+            var teams = await repository.FindTeamsAsync();
 
-            if (peladas != null)
-                return peladas;
+            if (teams != null)
+                return teams;
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Pelada pelada)
+        public async Task<ActionResult> Create(Team team)
         {
             try
             {
-                await repository.CreatePeladaAsync(pelada);
+                await repository.CreateTeamAsync(team);
             }
             catch (Exception e)
             {
@@ -55,16 +55,16 @@ namespace web_service.Controllers
                 });
             }
 
-            return RedirectToAction("Get", new { id = pelada.Id });
+            return RedirectToAction("Get", new { id = team.Id });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Pelada pelada)
+        public async Task<ActionResult> Update(int id, Team team)
         {
             try
             {
-                if (await repository.UpdatePeladaAsync(id, pelada))
-                    return Ok(new { message = "Pelada atualizada com sucesso !" });
+                if (await repository.UpdateTeamAsync(id, team))
+                    return Ok(new { message = "Time atualizado com sucesso !" });
             }
             catch (Exception e)
             {
@@ -74,7 +74,7 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound(new { message = "Pelada não encontrada !" });
+            return NotFound(new { message = "Time não encontrado !" });
         }
 
         [HttpDelete("{id}")]
@@ -82,8 +82,8 @@ namespace web_service.Controllers
         {
             try
             {
-                if (await repository.DeletePeladaAsync(id))
-                    return Ok(new { message = "Pelada excluída com sucesso !" });
+                if (await repository.DeleteTeamAsync(id))
+                    return Ok(new { message = "Time excluído com sucesso !" });
             }
             catch (Exception e)
             {
@@ -93,8 +93,8 @@ namespace web_service.Controllers
                 });
             }
 
-            return NotFound(new { message = "Pelada não encontrada !" });
+            return NotFound(new { message = "Time não encontrado !" });
         }
-
+        
     }
 }

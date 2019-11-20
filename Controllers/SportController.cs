@@ -1,48 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using web_service.Models;
+using web_service.Repositories;
 
 namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EsporteController : ControllerBase
+    public class SportController : ControllerBase
     {   
-        /*
-        private readonly EsporteRepository repository;
+        private readonly SportRepository repository;
 
-        public EsporteController(EsporteRepository repository)
+        public SportController(SportRepository repository)
         {
             this.repository = repository;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Esporte>> Get(int id)
+        public async Task<ActionResult<Sport>> Get(int id)
         {
-            var esporte = await repository.FindEsporteAsync(id);
+            var sport = await repository.FindSportAsync(id);
 
-            if (esporte != null)
-                return esporte;
+            if (sport != null)
+                return sport;
 
             return NotFound();
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Esporte>>> Get()
+        public async Task<ActionResult<List<Sport>>> Get()
         {
-            var esportes = await repository.GetEsportesAsync();
+            var sports = await repository.FindSportsAsync();
 
-            if (esportes != null)
-                return esportes;
+            if (sports != null)
+                return sports;
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Esporte esporte)
+        public async Task<ActionResult> Create(Sport sport)
         {
             try
             {
-                await repository.CreateEsporteAsync(esporte);
+                await repository.CreateSportAsync(sport);
             }
             catch (Exception e)
             {
@@ -52,15 +55,15 @@ namespace web_service.Controllers
                 });
             }
 
-            return RedirectToAction("Get", new { id = esporte.Id });
+            return RedirectToAction("Get", new { id = sport.Id });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, Esporte esporte)
+        public async Task<ActionResult> Update(int id, Sport sport)
         {
             try
             {
-                if (await repository.UpdateEsporteAsync(id, esporte))
+                if (await repository.UpdateSportAsync(id, sport))
                     return Ok(new { message = "Esporte atualizado com sucesso !" });
             }
             catch (Exception e)
@@ -82,7 +85,7 @@ namespace web_service.Controllers
         {
             try
             {
-                if (await repository.DeleteEsporteAsync(id))
+                if (await repository.DeleteSportAsync(id))
                     return Ok(new { message = "Esporte excluído com sucesso !" });
             }
             catch (Exception e)
@@ -95,6 +98,5 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Esporte não encontrado !" });
         }
-        */
     }
 }
