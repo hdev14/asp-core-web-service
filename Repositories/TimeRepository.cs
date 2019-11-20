@@ -6,7 +6,7 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class TimeRepository
+    public class TimeRepository : IWebServiceRepository
     {
         private readonly WebServiceContext context;
 

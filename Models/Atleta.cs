@@ -1,6 +1,6 @@
 namespace web_service.Models
 {
-    public class Atleta
+    public class Atleta : IModel
     {
         public int Id { get; set; }
         public string Nome { get; set; }

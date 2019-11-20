@@ -6,7 +6,7 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class PeladaRepository
+    public class PeladaRepository : IWebServiceRepository
     {   
         private readonly WebServiceContext context;
 

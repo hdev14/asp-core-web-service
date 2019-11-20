@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace web_service.Models
 {
-    public class Time
+    public class Time : IModel
     {
         public int Id { get; set; }
         public string Nome { get; set; }

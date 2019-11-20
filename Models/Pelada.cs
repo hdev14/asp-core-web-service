@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace web_service.Models
 {
-    public class Pelada
+    public class Pelada : IModel
     {
         public int Id { get; set; }
         public string Titulo { get; set; } 
