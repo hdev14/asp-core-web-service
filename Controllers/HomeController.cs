@@ -1,9 +1,4 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using web_service.Models;
-using web_service.Repositories;
-using web_service.Services.Auth;
 
 namespace web_service.Controllers
 {
@@ -11,6 +6,7 @@ namespace web_service.Controllers
     [Route("api/[controller]")]
     public class HomeController : ControllerBase
     {
+        /*
         private readonly UsuarioRepository repository;
 
         public HomeController(UsuarioRepository repository)
@@ -39,5 +35,6 @@ namespace web_service.Controllers
 
             return BadRequest(new { message = "Username ou password inválidos !" });
         }
+        */
     }
 }

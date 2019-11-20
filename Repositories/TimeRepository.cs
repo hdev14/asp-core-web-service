@@ -6,8 +6,9 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class TimeRepository : IWebServiceRepository
+    public class TimeRepository
     {
+        /*
         private readonly WebServiceContext context;
 
         public TimeRepository(WebServiceContext context)
@@ -56,5 +57,6 @@ namespace web_service.Repositories
         {
             return await context.Times.ToListAsync();
         }
+        */
     }
 }

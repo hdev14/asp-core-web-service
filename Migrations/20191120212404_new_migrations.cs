@@ -3,42 +3,42 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace web_service.Migrations
 {
-    public partial class create_tables : Migration
+    public partial class new_migrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Esportes",
+                name: "Sport",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    NumeroJogadores = table.Column<int>(nullable: false),
-                    NumeroJogadoresTime = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    NumberPlayers = table.Column<int>(nullable: false),
+                    NumberPlayersTeam = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Esportes", x => x.Id);
+                    table.PrimaryKey("PK_Sport", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Peladas",
+                name: "Pelada",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -47,27 +47,28 @@ namespace web_service.Migrations
                     Descricao = table.Column<string>(nullable: true),
                     Local = table.Column<string>(nullable: true),
                     UsuarioId = table.Column<int>(nullable: false),
-                    EsporteId = table.Column<int>(nullable: false)
+                    EsporteId = table.Column<int>(nullable: false),
+                    SportId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Peladas", x => x.Id);
+                    table.PrimaryKey("PK_Pelada", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Peladas_Esportes_EsporteId",
-                        column: x => x.EsporteId,
-                        principalTable: "Esportes",
+                        name: "FK_Pelada_Sport_SportId",
+                        column: x => x.SportId,
+                        principalTable: "Sport",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Peladas_Usuarios_UsuarioId",
+                        name: "FK_Pelada_User_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Times",
+                name: "Team",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -77,72 +78,78 @@ namespace web_service.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Times", x => x.Id);
+                    table.PrimaryKey("PK_Team", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Times_Peladas_PeladaId",
+                        name: "FK_Team_Pelada_PeladaId",
                         column: x => x.PeladaId,
-                        principalTable: "Peladas",
+                        principalTable: "Pelada",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Atletas",
+                name: "Athlete",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(nullable: true),
-                    TimeId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    TeamId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Atletas", x => x.Id);
+                    table.PrimaryKey("PK_Athlete", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Atletas_Times_TimeId",
-                        column: x => x.TimeId,
-                        principalTable: "Times",
+                        name: "FK_Athlete_Team_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Atletas_TimeId",
-                table: "Atletas",
-                column: "TimeId");
+                name: "IX_Athlete_TeamId",
+                table: "Athlete",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Peladas_EsporteId",
-                table: "Peladas",
-                column: "EsporteId");
+                name: "IX_Pelada_SportId",
+                table: "Pelada",
+                column: "SportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Peladas_UsuarioId",
-                table: "Peladas",
+                name: "IX_Pelada_UsuarioId",
+                table: "Pelada",
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Times_PeladaId",
-                table: "Times",
+                name: "IX_Team_PeladaId",
+                table: "Team",
                 column: "PeladaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Username",
+                table: "User",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Atletas");
+                name: "Athlete");
 
             migrationBuilder.DropTable(
-                name: "Times");
+                name: "Team");
 
             migrationBuilder.DropTable(
-                name: "Peladas");
+                name: "Pelada");
 
             migrationBuilder.DropTable(
-                name: "Esportes");
+                name: "Sport");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "User");
         }
     }
 }

@@ -6,11 +6,11 @@ namespace web_service.database
     public class WebServiceContext : DbContext
     {
         // ENTIDADES
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Pelada> Peladas { get; set; }
-        public DbSet<Time> Times { get; set; }
-        public DbSet<Atleta> Atletas { get; set; }
-        public DbSet<Esporte> Esportes { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Pelada> Pelada { get; set; }
+        public DbSet<Team> Team { get; set; }
+        public DbSet<Athlete> Athlete { get; set; }
+        public DbSet<Sport> Sport { get; set; }
 
 
         public WebServiceContext(DbContextOptions<WebServiceContext> options) : base(options)
@@ -20,7 +20,7 @@ namespace web_service.database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Usuario>().HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
         }
 
 

@@ -7,8 +7,9 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class EsporteRepository : IWebServiceRepository
+    public class EsporteRepository
     {
+        /*
         private readonly WebServiceContext context;
 
         public EsporteRepository(WebServiceContext context)
@@ -61,5 +62,6 @@ namespace web_service.Repositories
         {
             return await context.Esportes.ToListAsync();
         }
+        */
     }
 }

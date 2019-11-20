@@ -8,8 +8,8 @@ using web_service.database;
 namespace web_service.Migrations
 {
     [DbContext(typeof(WebServiceContext))]
-    [Migration("20191113155259_create_tables")]
-    partial class create_tables
+    [Migration("20191120212743_rename_columns")]
+    partial class rename_columns
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,43 +18,23 @@ namespace web_service.Migrations
                 .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("web_service.Models.Atleta", b =>
+            modelBuilder.Entity("web_service.Models.Athlete", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("TimeId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TimeId");
+                    b.HasIndex("TeamId");
 
-                    b.ToTable("Atletas");
-                });
-
-            modelBuilder.Entity("web_service.Models.Esporte", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("NumeroJogadores")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumeroJogadoresTime")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Esportes");
+                    b.ToTable("Athlete");
                 });
 
             modelBuilder.Entity("web_service.Models.Pelada", b =>
@@ -63,37 +43,57 @@ namespace web_service.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Descricao")
+                    b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("EsporteId")
+                    b.Property<string>("Place")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("SportId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Local")
+                    b.Property<string>("Title")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Titulo")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EsporteId");
+                    b.HasIndex("SportId");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Peladas");
+                    b.ToTable("Pelada");
                 });
 
-            modelBuilder.Entity("web_service.Models.Time", b =>
+            modelBuilder.Entity("web_service.Models.Sport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("NumberPlayers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberPlayersTeam")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sport");
+                });
+
+            modelBuilder.Entity("web_service.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("PeladaId")
@@ -103,57 +103,60 @@ namespace web_service.Migrations
 
                     b.HasIndex("PeladaId");
 
-                    b.ToTable("Times");
+                    b.ToTable("Team");
                 });
 
-            modelBuilder.Entity("web_service.Models.Usuario", b =>
+            modelBuilder.Entity("web_service.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Password")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Username")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("User");
                 });
 
-            modelBuilder.Entity("web_service.Models.Atleta", b =>
+            modelBuilder.Entity("web_service.Models.Athlete", b =>
                 {
-                    b.HasOne("web_service.Models.Time", "Time")
-                        .WithMany("Atletas")
-                        .HasForeignKey("TimeId")
+                    b.HasOne("web_service.Models.Team", "Team")
+                        .WithMany("Athletes")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("web_service.Models.Pelada", b =>
                 {
-                    b.HasOne("web_service.Models.Esporte", "Esporte")
+                    b.HasOne("web_service.Models.Sport", "Sport")
                         .WithMany("Pelada")
-                        .HasForeignKey("EsporteId")
+                        .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("web_service.Models.Usuario", "Usuario")
+                    b.HasOne("web_service.Models.User", "User")
                         .WithMany("Peladas")
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("web_service.Models.Time", b =>
+            modelBuilder.Entity("web_service.Models.Team", b =>
                 {
                     b.HasOne("web_service.Models.Pelada", "Pelada")
-                        .WithMany("Times")
+                        .WithMany("Teams")
                         .HasForeignKey("PeladaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using web_service.Models;
-using web_service.Repositories;
+
 
 namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class EsporteController : ControllerBase
-    {
+    {   
+        /*
         private readonly EsporteRepository repository;
 
         public EsporteController(EsporteRepository repository)
@@ -98,5 +95,6 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Esporte não encontrado !" });
         }
+        */
     }
 }

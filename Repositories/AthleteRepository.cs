@@ -6,25 +6,26 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class AtletaRepository : IWebServiceRepository
+    public class AthleteRepository
     {
-
+        
+        /*
         private readonly WebServiceContext context;
         
-        public AtletaRepository(WebServiceContext context)
+        public AthleteRepository(WebServiceContext context)
         {   
             this.context = context;
         }
 
-        public async Task CreateAtletaAsync(Atleta atleta)
+        public async Task CreateModelAsync(Athlete a)
         {
-            context.Atletas.Add(atleta);
+            context.Atletas.Add(a);
             await context.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateAtletaAsync(int id, Atleta a)
-        {
-            var atleta = await this.FindAtletaAsync(id);
+        public async Task<bool> UpdateModelAsync(int id, Athlete a)
+        {   
+            var atleta = await this.FindModelAsync(id);
             if (atleta != null)
             {
                 atleta.Nome = a.Nome;
@@ -35,9 +36,9 @@ namespace web_service.Repositories
             return false;
         }
 
-        public async Task<bool> DeleteAtletaAsync(int id)
+        public async Task<bool> DeleteModelAsync(int id)
         {
-            var atleta = await this.FindAtletaAsync(id);
+            var atleta = (Atleta) await this.FindModelAsync(id);
             if (atleta != null)
             {
                 context.Atletas.Remove(atleta);
@@ -48,14 +49,15 @@ namespace web_service.Repositories
             return false;
         }
 
-        public async Task<Atleta> FindAtletaAsync(int id)
+        public async Task<Athlete> FindModelAsync(int id)
         {
             return await context.Atletas.FindAsync(id);
         }
 
-        public async Task<List<Atleta>> GetAtletasAsync()
+        public async Task<List<Athlete>> FindModelsAsync()
         {
-            return await context.Atletas.ToListAsync();
+            return await context.Athlete.ToListAsync();
         }
+        */
     }
 }

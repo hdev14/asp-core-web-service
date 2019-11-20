@@ -12,6 +12,7 @@ namespace web_service.Controllers
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
+        /*
         private readonly UsuarioRepository repository;
 
         public UsuarioController(UsuarioRepository repository)
@@ -99,6 +100,7 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Usuário não encontrado !" });
         }
+        */
 
     }
 }

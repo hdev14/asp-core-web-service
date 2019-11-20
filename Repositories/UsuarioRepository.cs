@@ -7,8 +7,9 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class UsuarioRepository : IWebServiceRepository
+    public class UsuarioRepository
     {
+        /*
         private readonly WebServiceContext context;
 
         public UsuarioRepository(WebServiceContext context)
@@ -66,5 +67,6 @@ namespace web_service.Repositories
         {
             return await context.Usuarios.Where(u => u.Username == username).FirstOrDefaultAsync();
         }
+        */
     }
 }

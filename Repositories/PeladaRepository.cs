@@ -6,8 +6,9 @@ using web_service.Models;
 
 namespace web_service.Repositories
 {
-    public class PeladaRepository : IWebServiceRepository
+    public class PeladaRepository
     {   
+        /*
         private readonly WebServiceContext context;
 
         public PeladaRepository(WebServiceContext context)
@@ -58,5 +59,6 @@ namespace web_service.Repositories
         {
             return await context.Peladas.ToListAsync();
         }
+        */
     }
 }

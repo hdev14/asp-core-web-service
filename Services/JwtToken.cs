@@ -9,7 +9,7 @@ namespace web_service.Services.Auth
 {
     public static class JwtToken
     {
-        public static string GenerateToken(Usuario usuario)
+        public static string GenerateToken(User usuario)
         {
             var key = Encoding.ASCII.GetBytes(Secret.KEY);
             var securityKey = new SymmetricSecurityKey(key);

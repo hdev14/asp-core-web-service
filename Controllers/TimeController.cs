@@ -12,6 +12,7 @@ namespace web_service.Controllers
     [Route("api/[controller]")]
     public class TimeController : ControllerBase
     {
+        /*
         private readonly TimeRepository repository;
         public TimeController(TimeRepository repository)
         {
@@ -94,5 +95,6 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Time não encontrado !" });
         }
+        */
     }
 }

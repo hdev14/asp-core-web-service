@@ -11,6 +11,7 @@ namespace web_service.Controllers
     [Route("api/[controller]")]
     public class PeladaController : ControllerBase
     {
+        /*
         private readonly PeladaRepository repository;
 
         public PeladaController(PeladaRepository repository)
@@ -95,5 +96,6 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Pelada não encontrada !" });
         }
+        */
     }
 }
