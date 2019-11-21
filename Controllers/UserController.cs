@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
 using web_service.Repositories;
+using web_service.Services.Auth;
 
 namespace web_service.Controllers
 {
@@ -50,7 +51,7 @@ namespace web_service.Controllers
         {
             try
             {
-                user.Password = Crypter.Blowfish.Crypt(user.Password);
+                user.Password = AuthManager.encrypt(user.Password);
                 await repository.CreateUsuarioAsync(user);
             }
             catch (Exception e)

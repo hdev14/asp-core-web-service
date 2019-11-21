@@ -23,23 +23,21 @@ namespace web_service.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Authenticate(Login login)
         {
-            var usuario = await repository.GetUserByUsername(login.Username);
+            var user = await repository.GetUserByUsername(login.Username);
 
-            if (usuario != null && 
-                Crypter.CheckPassword(login.Password, usuario.Password))
+            if (user != null && AuthManager.AuthenticateUser(user, login.Password))
             {
-                var token = JwtToken.GenerateToken(usuario);
-                usuario.Password = "";
+                var token = JwtToken.GenerateToken(user);
+                user.Password = "";
 
                 return Ok(new
                 {
-                    user = usuario,
+                    user = user,
                     token = token
                 });
             }
 
             return BadRequest(new { message = "Username ou password inválidos !" });
         }
-        
     }
 }
