@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_service.Models;
@@ -10,16 +11,17 @@ namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TimeController : ControllerBase
+    public class TeamController : ControllerBase
     {
 
         private readonly TeamRepository repository;
-        public TimeController(TeamRepository repository)
+        public TeamController(TeamRepository repository)
         {
             this.repository = repository;
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Team>> Get(int id)
         {
             var team = await repository.FindTeamAsync(id);
@@ -30,6 +32,7 @@ namespace web_service.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Team>>> Get()
         {
             var teams = await repository.FindTeamsAsync();
@@ -41,6 +44,7 @@ namespace web_service.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Create(Team team)
         {
             try
@@ -59,6 +63,7 @@ namespace web_service.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> Update(int id, Team team)
         {
             try
@@ -78,6 +83,7 @@ namespace web_service.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             try

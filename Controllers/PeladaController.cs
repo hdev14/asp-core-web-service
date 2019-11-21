@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
 using web_service.Repositories;
@@ -19,6 +20,7 @@ namespace web_service.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Pelada>> Get(int id)
         {
             var pelada = await repository.FindPeladaAsync(id);
@@ -30,6 +32,7 @@ namespace web_service.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<Pelada>>> Get()
         {
             var peladas = await repository.FindPeladasAsync();
@@ -41,6 +44,7 @@ namespace web_service.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Create(Pelada pelada)
         {
             try
@@ -59,6 +63,7 @@ namespace web_service.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> Update(int id, Pelada pelada)
         {
             try
@@ -78,6 +83,7 @@ namespace web_service.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             try

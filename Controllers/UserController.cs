@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptSharp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
 using web_service.Repositories;
-using web_service.Services.Auth;
 
 namespace web_service.Controllers
 {
@@ -21,6 +21,7 @@ namespace web_service.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> Get(int id)
         {
             var user = await repository.FindUserAsync(id);
@@ -32,6 +33,7 @@ namespace web_service.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<User>>> Get()
         {
             var users = await repository.FindUsersAsync();
@@ -43,6 +45,7 @@ namespace web_service.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Create(User user)
         {
             try
@@ -62,6 +65,7 @@ namespace web_service.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> Update(int id, User user)
         {
             try
@@ -82,6 +86,7 @@ namespace web_service.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> Delete(int id)
         {
             try

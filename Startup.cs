@@ -36,11 +36,11 @@ namespace web_service
             services.AddDbContext<WebServiceContext>(options => options.UseMySql(connectionString));
 
             // DI
-            // services.AddScoped<IWebServiceRepository, UsuarioRepository>();
-            // services.AddScoped<IWebServiceRepository, EsporteRepository>();
-            // services.AddScoped<IWebServiceRepository, AtletaRepository>();
-            // services.AddScoped<IWebServiceRepository, TimeRepository>();
-            // services.AddScoped<IWebServiceRepository, PeladaRepository>();
+            services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<AthleteRepository, AthleteRepository>();
+            services.AddScoped<PeladaRepository, PeladaRepository>();
+            services.AddScoped<SportRepository, SportRepository>();
+            services.AddScoped<TeamRepository, TeamRepository>();
 
             // JWT Bearer Authentication
 
