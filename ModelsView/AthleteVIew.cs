@@ -1,9 +1,9 @@
 namespace web_service.ModelsView
 {
-    public class UserView
+    public class AthleteView
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Username { get; set; }
+        public int TeamId { get; set; }
     }
 }

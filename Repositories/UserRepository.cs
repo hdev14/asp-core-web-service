@@ -53,11 +53,6 @@ namespace web_service.Repositories
             return false;
         }
 
-        public async Task<User> GetUserByUsername(string username)
-        {
-            return await context.User.Where(u => u.Username == username).FirstOrDefaultAsync();
-        }
-
         public async Task<User> FindUserAsync(int id)
         {
             return await context.User.FindAsync(id);
@@ -65,12 +60,19 @@ namespace web_service.Repositories
 
         public async Task<List<UserView>> FindUsersAsync()
         {
-            return await context.User.Select(user => new UserView{
+            return await context.User.Select(user => new UserView
+            {
                 Id = user.Id,
                 Name = user.Name,
                 Username = user.Username
 
             }).ToListAsync();
         }
+        
+        public async Task<User> GetUserByUsername(string username)
+        {
+            return await context.User.Where(u => u.Username == username).FirstOrDefaultAsync();
+        }
+
     }
 }

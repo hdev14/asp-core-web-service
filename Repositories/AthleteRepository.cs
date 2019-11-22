@@ -1,17 +1,19 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
 using web_service.Models;
+using web_service.ModelsView;
 
 namespace web_service.Repositories
 {
     public class AthleteRepository
     {
         private readonly WebServiceContext context;
-        
+
         public AthleteRepository(WebServiceContext context)
-        {   
+        {
             this.context = context;
         }
 
@@ -22,7 +24,7 @@ namespace web_service.Repositories
         }
 
         public async Task<bool> UpdateAthleteAsync(int id, Athlete a)
-        {   
+        {
             var athlete = await this.FindAthleteAsync(id);
             if (athlete != null)
             {
@@ -52,9 +54,14 @@ namespace web_service.Repositories
             return await context.Athlete.FindAsync(id);
         }
 
-        public async Task<List<Athlete>> FindAthletesAsync()
+        public async Task<List<AthleteView>> FindAthletesAsync()
         {
-            return await context.Athlete.ToListAsync();
+            return await context.Athlete.Select(athlete => new AthleteView
+            {
+                Id = athlete.Id,
+                Name = athlete.Name,
+                TeamId = athlete.TeamId
+            }).ToListAsync();
         }
     }
 }
