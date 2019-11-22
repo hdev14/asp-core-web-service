@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using web_service.database;
 using web_service.Models;
-
+using web_service.ModelsView;
 
 namespace web_service.Repositories
 {
@@ -60,9 +60,15 @@ namespace web_service.Repositories
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Sport>> FindSportsAsync()
+        public async Task<List<SportView>> FindSportsAsync()
         {
-            return await context.Sport.ToListAsync();
+            return await context.Sport.Select(sport => new SportView
+            {
+                Id = sport.Id,
+                Name = sport.Name,
+                NumberPlayers = sport.NumberPlayers,
+                NumberPlayersTeam = sport.NumberPlayersTeam
+            }).ToListAsync();
         }
     }
 }

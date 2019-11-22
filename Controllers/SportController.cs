@@ -33,7 +33,7 @@ namespace web_service.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Sport>>> Get()
+        public async Task<ActionResult<List<SportView>>> Get()
         {
             var sports = await repository.FindSportsAsync();
 
