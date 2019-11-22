@@ -20,7 +20,8 @@ namespace web_service.Repositories
 
         public async Task CreatePeladaAsync(Pelada p)
         {
-            var list = p.Teams.ToList();
+            var list = p.Teams.ToList()[0];
+            string name = list.Name;
 
             context.Pelada.Add(p);
             await context.SaveChangesAsync();
@@ -57,7 +58,26 @@ namespace web_service.Repositories
         public async Task<Pelada> FindPeladaAsync(int id)
         {
             return await context.Pelada.Where(p => p.Id == id)
-                        .Select(pelada => this.GetPeladaWithoutUserPassword(pelada))
+                        .Select(pelada => new Pelada
+                        {
+                            Id = pelada.Id,
+                            Title = pelada.Title,
+                            Description = pelada.Description,
+
+                            UserId = pelada.UserId,
+                            User = context.User.Where(u => u.Id == pelada.UserId)
+                                    .Select(user => new User
+                                    {
+                                        Id = user.Id,
+                                        Name = user.Name,
+                                        Username = user.Username,
+                                    }).FirstOrDefault(),
+
+                            SportId = pelada.SportId,
+                            Sport = pelada.Sport,
+
+                            Teams = context.Team.Where(t => t.PeladaId == pelada.Id).ToList()
+                        })
                         .FirstOrDefaultAsync();
         }
 
@@ -74,38 +94,5 @@ namespace web_service.Repositories
             }).ToListAsync();
         }
 
-        private Pelada GetPeladaWithoutUserPassword(Pelada pelada)
-        {
-            return new Pelada
-            {
-                Id = pelada.Id,
-                Title = pelada.Title,
-                Description = pelada.Description,
-
-                UserId = pelada.UserId,
-                User = this.GetPeladaUser(pelada.UserId),
-
-                SportId = pelada.SportId,
-                Sport = pelada.Sport,
-
-                Teams = this.GetPeladaTeams(pelada.Id)
-            };
-        }
-
-        private User GetPeladaUser(int userId)
-        {
-            return context.User.Where(u => u.Id == userId)
-                                .Select(user => new User
-                                {
-                                    Id = user.Id,
-                                    Name = user.Name,
-                                    Username = user.Username,
-                                }).FirstOrDefault();
-        }
-
-        private List<Team> GetPeladaTeams(int peladaId)
-        {
-            return context.Team.Where(t => t.PeladaId == peladaId).ToList();
-        }
     }
 }
