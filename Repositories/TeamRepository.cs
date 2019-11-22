@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
 using web_service.Models;
+using web_service.ModelsView;
 
 namespace web_service.Repositories
 {
@@ -55,9 +56,14 @@ namespace web_service.Repositories
                             .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Team>> FindTeamsAsync()
+        public async Task<List<TeamView>> FindTeamsAsync()
         {
-            return await context.Team.ToListAsync();
+            return await context.Team.Select(team => new TeamView
+            {
+                Id = team.Id,
+                Name = team.Name,
+                PeladaId = team.PeladaId
+            }).ToListAsync();
         }
     }
 }
