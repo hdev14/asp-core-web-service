@@ -23,8 +23,8 @@ namespace web_service.Controllers
         public async Task<ActionResult> Authenticate(Login login)
         {
             var user = await repository.GetUserByUsername(login.Username);
-
-            if (user != null && AuthManager.AuthenticateUser(user, login.Password))
+            
+            if (AuthManager.AuthenticateUser(user, login.Password))
             {
                 var token = JwtToken.GenerateToken(user);
                 user.Password = "";
