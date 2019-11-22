@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
 using web_service.Models;
+using web_service.ModelsView;
 
 namespace web_service.Repositories
 {
@@ -61,9 +61,18 @@ namespace web_service.Repositories
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Pelada>> FindPeladasAsync()
+        public async Task<List<PeladaView>> FindPeladasAsync()
         {
-            return await context.Pelada.ToListAsync();
+            return await context.Pelada.Select(pelada => new PeladaView
+            {
+                Id = pelada.Id,
+                Title = pelada.Title,
+                Description = pelada.Description,
+                Place = pelada.Place,
+                UserId = pelada.UserId,
+                SportId = pelada.SportId
+                
+            }).ToListAsync();
         }
 
         private Pelada GetPeladaWithoutUserPassword(Pelada pelada)
@@ -81,7 +90,6 @@ namespace web_service.Repositories
                 Sport = pelada.Sport,
 
                 Teams = this.GetPeladaTeams(pelada.Id)
-
             };
         }
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
+using web_service.ModelsView;
 using web_service.Repositories;
 
 namespace web_service.Controllers
@@ -33,7 +34,7 @@ namespace web_service.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Pelada>>> Get()
+        public async Task<ActionResult<List<PeladaView>>> Get()
         {
             var peladas = await repository.FindPeladasAsync();
 
@@ -101,10 +102,6 @@ namespace web_service.Controllers
 
             return NotFound(new { message = "Pelada não encontrada !" });
         }
-
-        // [HttpPost("add-teams")]
-        // [Authorize]
-        // public async Task<>
 
     }
 }
