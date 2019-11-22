@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
+using web_service.ModelsView;
 using web_service.Repositories;
 
 namespace web_service.Controllers

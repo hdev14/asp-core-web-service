@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
+using web_service.ModelsView;
 using web_service.Repositories;
 using web_service.Services.Auth;
 
@@ -34,7 +35,7 @@ namespace web_service.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<User>>> Get()
+        public async Task<ActionResult<List<UserView>>> Get()
         {
             var users = await repository.FindUsersAsync();
 

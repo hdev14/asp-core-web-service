@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
 using web_service.Models;
+using web_service.ModelsView;
 
 namespace web_service.Repositories
 {
@@ -62,9 +63,14 @@ namespace web_service.Repositories
             return await context.User.FindAsync(id);
         }
 
-        public async Task<List<User>> FindUsersAsync()
+        public async Task<List<UserView>> FindUsersAsync()
         {
-            return await context.User.ToListAsync();
+            return await context.User.Select(user => new UserView{
+                Id = user.Id,
+                Name = user.Name,
+                Username = user.Username
+
+            }).ToListAsync();
         }
     }
 }
