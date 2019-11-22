@@ -71,7 +71,6 @@ namespace web_service.Repositories
                 Place = pelada.Place,
                 UserId = pelada.UserId,
                 SportId = pelada.SportId
-
             }).ToListAsync();
         }
 

@@ -55,9 +55,9 @@ namespace web_service.Repositories
 
         public async Task<Sport> FindSportAsync(int id)
         {
-            return await context.Sport.Include(s => s.Peladas)
-                        .Where(s => s.Id == id)
-                        .FirstOrDefaultAsync();
+            return await context.Sport.Where(s => s.Id == id)
+                            .Include(s => s.Peladas)
+                            .FirstOrDefaultAsync();
         }
 
         public async Task<List<SportView>> FindSportsAsync()

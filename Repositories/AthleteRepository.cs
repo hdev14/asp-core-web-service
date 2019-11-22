@@ -51,7 +51,9 @@ namespace web_service.Repositories
 
         public async Task<Athlete> FindAthleteAsync(int id)
         {
-            return await context.Athlete.FindAsync(id);
+            return await context.Athlete.Where(a => a.Id == id)
+                                    .Include(a => a.Team)
+                                    .FirstOrDefaultAsync();
         }
 
         public async Task<List<AthleteView>> FindAthletesAsync()
