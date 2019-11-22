@@ -102,5 +102,9 @@ namespace web_service.Controllers
             return NotFound(new { message = "Pelada não encontrada !" });
         }
 
+        // [HttpPost("add-teams")]
+        // [Authorize]
+        // public async Task<>
+
     }
 }

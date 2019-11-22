@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
@@ -18,7 +20,9 @@ namespace web_service.Repositories
 
         public async Task<Pelada> FindPeladaAsync(int id)
         {
-            return await context.Pelada.FindAsync(id);
+            return await context.Pelada.Include(p => p.User)
+                        .Where(p => p.Id == id)
+                        .FirstOrDefaultAsync();
         }
 
         public async Task<List<Pelada>> FindPeladasAsync()
@@ -28,6 +32,8 @@ namespace web_service.Repositories
 
         public async Task CreatePeladaAsync(Pelada p)
         {
+            var list = p.Teams.ToList();
+
             context.Pelada.Add(p);
             await context.SaveChangesAsync();
         }

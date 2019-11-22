@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using web_service.database;
 using web_service.Models;
@@ -54,7 +55,7 @@ namespace web_service.Repositories
 
         public async Task<Sport> FindSportAsync(int id)
         {
-            return await context.Sport.FindAsync(id);
+            return await context.Sport.Include(s => s.Pelada).Where(s => s.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<List<Sport>> FindSportsAsync()

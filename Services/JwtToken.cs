@@ -19,7 +19,7 @@ namespace web_service.Services.Auth
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddHours(6),
                 SigningCredentials = 
                     new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
             };

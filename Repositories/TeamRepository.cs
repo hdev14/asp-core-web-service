@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using web_service.database;
@@ -13,16 +14,6 @@ namespace web_service.Repositories
         public TeamRepository(WebServiceContext context)
         {
             this.context = context;
-        }
-
-        public async Task<Team> FindTeamAsync(int id)
-        {
-            return await context.Team.FindAsync(id);
-        }
-
-        public async Task<List<Team>> FindTeamsAsync()
-        {
-            return await context.Team.ToListAsync();
         }
 
         public async Task CreateTeamAsync(Team t)
@@ -55,6 +46,18 @@ namespace web_service.Repositories
             }
 
             return false;
+        }
+
+        public async Task<Team> FindTeamAsync(int id)
+        {
+            return await context.Team.Include(t1 => t1.Pelada)
+                            .Where(t2 => t2.Id == id)
+                            .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Team>> FindTeamsAsync()
+        {
+            return await context.Team.ToListAsync();
         }
     }
 }

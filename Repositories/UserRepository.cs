@@ -16,16 +16,6 @@ namespace web_service.Repositories
             this.context = context;
         }
 
-        public async Task<User> FindUserAsync(int id)
-        {
-            return await context.User.FindAsync(id);
-        }
-
-        public async Task<List<User>> FindUsersAsync()
-        {
-            return await context.User.ToListAsync();
-        }
-
         public async Task CreateUsuarioAsync(User u)
         {
             context.User.Add(u);
@@ -66,6 +56,15 @@ namespace web_service.Repositories
         {
             return await context.User.Where(u => u.Username == username).FirstOrDefaultAsync();
         }
-        
+
+        public async Task<User> FindUserAsync(int id)
+        {
+            return await context.User.FindAsync(id);
+        }
+
+        public async Task<List<User>> FindUsersAsync()
+        {
+            return await context.User.ToListAsync();
+        }
     }
 }
