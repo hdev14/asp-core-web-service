@@ -65,7 +65,10 @@ namespace web_service
             });
 
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(jsonOpitons => {
+                jsonOpitons.SerializerSettings.ReferenceLoopHandling =   
+                                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
 
         }
 

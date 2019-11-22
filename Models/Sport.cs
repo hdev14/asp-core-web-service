@@ -8,6 +8,6 @@ namespace web_service.Models
         public string Name { get; set; }
         public int NumberPlayers { get; set; }
         public int NumberPlayersTeam { get; set; }
-        public virtual List<Pelada> Pelada { get; set; }
+        public virtual List<Pelada> Peladas { get; set; }
     }
 }
