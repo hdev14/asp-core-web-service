@@ -55,7 +55,9 @@ namespace web_service.Repositories
 
         public async Task<User> FindUserAsync(int id)
         {
-            return await context.User.FindAsync(id);
+            return await context.User.Where(u => u.Id == id)
+                                    .Include(u => u.Peladas)
+                                    .FirstOrDefaultAsync();
         }
 
         public async Task<List<UserView>> FindUsersAsync()
@@ -65,7 +67,6 @@ namespace web_service.Repositories
                 Id = user.Id,
                 Name = user.Name,
                 Username = user.Username
-
             }).ToListAsync();
         }
         
