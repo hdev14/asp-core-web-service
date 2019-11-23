@@ -9,12 +9,12 @@ namespace web_service.Services.Auth
 {
     public static class JwtToken
     {
-        public static string GenerateToken(User usuario)
+        public static string GenerateToken(User user)
         {
             var key = Encoding.ASCII.GetBytes(Secret.KEY);
             var securityKey = new SymmetricSecurityKey(key);
             
-            var claims = new Claim[] { new Claim(ClaimTypes.Name, usuario.Username.ToString()) };
+            var claims = new Claim[] { new Claim(ClaimTypes.Name, user.Username.ToString()) };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
