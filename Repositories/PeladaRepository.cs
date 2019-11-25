@@ -83,15 +83,17 @@ namespace web_service.Repositories
 
         public async Task<List<PeladaView>> FindPeladasAsync()
         {
-            return await context.Pelada.Select(pelada => new PeladaView
-            {
-                Id = pelada.Id,
-                Title = pelada.Title,
-                Description = pelada.Description,
-                Place = pelada.Place,
-                UserId = pelada.UserId,
-                SportId = pelada.SportId
-            }).ToListAsync();
+            return await context.Pelada
+                                .Select(pelada => new PeladaView
+                                {
+                                    Id = pelada.Id,
+                                    Title = pelada.Title,
+                                    Description = pelada.Description,
+                                    Place = pelada.Place,
+                                    UserId = pelada.UserId,
+                                    SportId = pelada.SportId
+                                })
+                                .ToListAsync();
         }
 
     }

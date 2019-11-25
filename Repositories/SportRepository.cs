@@ -62,13 +62,15 @@ namespace web_service.Repositories
 
         public async Task<List<SportView>> FindSportsAsync()
         {
-            return await context.Sport.Select(sport => new SportView
-            {
-                Id = sport.Id,
-                Name = sport.Name,
-                NumberPlayers = sport.NumberPlayers,
-                NumberPlayersTeam = sport.NumberPlayersTeam
-            }).ToListAsync();
+            return await context.Sport
+                                .Select(sport => new SportView
+                                {
+                                    Id = sport.Id,
+                                    Name = sport.Name,
+                                    NumberPlayers = sport.NumberPlayers,
+                                    NumberPlayersTeam = sport.NumberPlayersTeam
+                                })
+                                .ToListAsync();
         }
     }
 }

@@ -58,12 +58,14 @@ namespace web_service.Repositories
 
         public async Task<List<TeamView>> FindTeamsAsync()
         {
-            return await context.Team.Select(team => new TeamView
-            {
-                Id = team.Id,
-                Name = team.Name,
-                PeladaId = team.PeladaId
-            }).ToListAsync();
+            return await context.Team
+                                .Select(team => new TeamView
+                                {
+                                    Id = team.Id,
+                                    Name = team.Name,
+                                    PeladaId = team.PeladaId
+                                })
+                                .ToListAsync();
         }
     }
 }

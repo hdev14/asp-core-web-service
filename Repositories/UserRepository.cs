@@ -62,12 +62,14 @@ namespace web_service.Repositories
 
         public async Task<List<UserView>> FindUsersAsync()
         {
-            return await context.User.Select(user => new UserView
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Username = user.Username
-            }).ToListAsync();
+            return await context.User
+                                .Select(user => new UserView
+                                {
+                                    Id = user.Id,
+                                    Name = user.Name,
+                                    Username = user.Username
+                                })
+                                .ToListAsync();
         }
         
         public async Task<User> GetUserByUsername(string username)

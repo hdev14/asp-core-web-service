@@ -58,12 +58,14 @@ namespace web_service.Repositories
 
         public async Task<List<AthleteView>> FindAthletesAsync()
         {
-            return await context.Athlete.Select(athlete => new AthleteView
-            {
-                Id = athlete.Id,
-                Name = athlete.Name,
-                TeamId = athlete.TeamId
-            }).ToListAsync();
+            return await context.Athlete
+                                .Select(athlete => new AthleteView
+                                {
+                                    Id = athlete.Id,
+                                    Name = athlete.Name,
+                                    TeamId = athlete.TeamId
+                                })
+                                .ToListAsync();
         }
     }
 }
