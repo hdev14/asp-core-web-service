@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +67,23 @@ namespace web_service.Repositories
                                     TeamId = athlete.TeamId
                                 })
                                 .ToListAsync();
+        }
+
+        public Stack<Athlete> CreateStackOfAthletes(List<Athlete> athletes)
+        {
+            Stack<Athlete> stackAthletes = new Stack<Athlete>();
+            Random r = new Random();
+
+            for (int h = 0; h < athletes.Count; h++)
+            {   
+                int randomIndex = r.Next(0, athletes.Count);
+                
+                var athlete = athletes[randomIndex];
+                stackAthletes.Push(athlete);
+                athletes.Remove(athlete);
+            } 
+            
+            return stackAthletes;
         }
     }
 }

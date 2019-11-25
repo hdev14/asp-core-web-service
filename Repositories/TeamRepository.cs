@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +67,24 @@ namespace web_service.Repositories
                                     PeladaId = team.PeladaId
                                 })
                                 .ToListAsync();
+        }
+
+        public async Task<Team> CreateAndReturnTeam(Team t)
+        {
+            
+            await this.CreateTeamAsync(t);
+            var team = await this.FindTeamByNameAndPelada(t.Name, t.PeladaId);
+
+            if (team != null)
+                return team;
+
+            return null;
+        }
+
+        private async Task<Team> FindTeamByNameAndPelada(string name, int peladaId)
+        {
+            return await context.Team
+                                .Where(t => (t.Name == name && t.PeladaId == peladaId)).FirstOrDefaultAsync();
         }
     }
 }
