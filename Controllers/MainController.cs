@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_service.Models;
 using web_service.ModelsView;
@@ -30,47 +30,67 @@ namespace web_service.Controllers
         }
 
         [HttpPost("generate-teams/{peladaId}/{sportId}")]
+        [Authorize]
         public async Task<ActionResult<dynamic>> GenerateTeams(
-                                            int peladaId, int sportId, List<Athlete> athletes)
+                        int peladaId, int sportId, List<Athlete> athletes)
         {
-            var sport = await sportRepository.FindSportAsync(sportId);
-            if (sport == null)
-                return NotFound(new { message = "Esporte não encotrado !" });
-
             int numberAthletes = athletes.Count;
+            var sport = await sportRepository.FindSportAsync(sportId);
+
+            if (sport == null || this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers))
+            {
+                return NotFound(new { message = "Parametros inválidos" });
+            }
+                
 
             string[] arrayOfQuantity =
-                sportRepository.getArrayQuantityTeams(sport, numberAthletes);
+                teamRepository.getArrayQuantityTeams(sport, numberAthletes);
 
             int quantityOfTeams = Convert.ToInt32(arrayOfQuantity[0]);
-            int numberAfterComma = Convert.ToInt32(arrayOfQuantity[1]);
 
-            sportRepository.CheckReserve(numberAfterComma);
+            if (arrayOfQuantity.Length > 1)
+            {
+                int numberAfterComma = Convert.ToInt32(arrayOfQuantity[1]);
+                teamRepository.CheckReserveBank(numberAfterComma);
+            }
 
             try
             {
-                List<TeamAthletesView> teamAthletes = await this.CreateTeamAndAthletes(
-                                            athletes, quantityOfTeams, numberAthletes, peladaId);
+                List<TeamAthletesView> teamAthletes =
+                    await this.CreateTeamAndAthletes(
+                        athletes, quantityOfTeams, numberAthletes, 
+                                        sport.NumberPlayersTeam, peladaId);
 
                 return StatusCode(200, new
                 {
                     teamAthletes = teamAthletes,
                     listReserve = this.getListReserve()
                 });
-
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
-                return BadRequest(new {
-                    error = 
-                        String.Format("Não foi possível efetuar a operação devido -> {0}", e.Message)
+                return BadRequest(new
+                {
+                    error =
+                        String.Format(
+                            "Não foi possível efetuar a operação devido -> {0}", e.Message)
                 });
             }
         }
 
         private async Task<List<TeamAthletesView>> CreateTeamAndAthletes(
-                List<Athlete> athletes, int quantityOfTeams, int numberAthletes, int peladaId)
+            List<Athlete> athletes, 
+            int quantityOfTeams, 
+            int numberAthletes, 
+            int numberPlayersTeam, 
+            int peladaId)
         {
             List<TeamAthletesView> teamAthletes = new List<TeamAthletesView>();
+            this.stackOfAthletes = athleteRepository.CreateStackOfAthletes(athletes);
+
+            int numberAthletesPerTeam = 
+                    this.GetNumberAthletesPerTeam(
+                        numberAthletes, quantityOfTeams, numberPlayersTeam);
 
             for (int i = 0; i < quantityOfTeams; i++)
             {
@@ -80,7 +100,9 @@ namespace web_service.Controllers
                     PeladaId = peladaId
                 });
 
-                List<string> athleteNames = await CreateAthletes(athletes, numberAthletes, team.Id);
+                
+                List<string> athleteNames =
+                        await CreateAthletes(athletes, numberAthletesPerTeam, team.Id);
 
                 teamAthletes.Add(new TeamAthletesView
                 {
@@ -93,10 +115,22 @@ namespace web_service.Controllers
             return teamAthletes;
         }
 
+        private int GetNumberAthletesPerTeam(
+            int numberAthletes, int quantityOfTeams, int numberPlayersTeam)
+        {
+            int numberAthletesPerTeam = numberAthletes / quantityOfTeams;
+
+            while (numberAthletesPerTeam > numberPlayersTeam)
+            {
+                numberAthletesPerTeam--;
+            }
+
+            return numberAthletesPerTeam;
+        }
+
         private async Task<List<string>> CreateAthletes(
                 List<Athlete> athletes, int numberAthletes, int teamId)
         {
-            this.stackOfAthletes = athleteRepository.CreateStackOfAthletes(athletes);
             List<string> athleteNames = new List<string>();
 
             for (int j = 0; j < numberAthletes; j++)
@@ -113,14 +147,19 @@ namespace web_service.Controllers
         private List<string> getListReserve()
         {
             List<string> listReserve = new List<string>();
-
-            if (sportRepository.IsReserve)
+            int quantityBankReserve = stackOfAthletes.Count;
+            if (teamRepository.IsReserve)
             {
-                for (int h = 0; h < stackOfAthletes.Count; h++)
+                for (int h = 0; h < quantityBankReserve; h++)
                     listReserve.Add(stackOfAthletes.Pop().Name);
             }
 
             return listReserve;
+        }
+
+        private bool checkNumberOfAthletes(int numberAthletes, int numberPlayers)
+        {
+            return !(numberAthletes != 0 && numberAthletes >= numberPlayers);
         }
     }
 }

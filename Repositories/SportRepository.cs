@@ -11,7 +11,7 @@ namespace web_service.Repositories
     public class SportRepository
     {
         private readonly WebServiceContext context;
-        public bool IsReserve { get; set; }
+        
 
         public SportRepository(WebServiceContext context)
         {
@@ -74,23 +74,5 @@ namespace web_service.Repositories
                                 .ToListAsync();
         }
         
-
-        public string[] getArrayQuantityTeams(Sport sport, int numberAthletes)
-        {
-            double quantity = this.getQuantityOfTeams(numberAthletes, sport.NumberPlayersTeam);
-            string quantityInString = quantity.ToString();
-
-            return quantityInString.Split(',', System.StringSplitOptions.None);
-        }
-
-        public void CheckReserve(int numberAfterComma)
-        {
-            this.IsReserve = (numberAfterComma != 0);
-        }
-
-        private double getQuantityOfTeams(int numberAthletes, int numberPlayers)
-        {
-            return numberAthletes / numberPlayers;
-        }
     }
 }

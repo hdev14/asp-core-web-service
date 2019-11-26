@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,10 +11,12 @@ namespace web_service.Repositories
     public class TeamRepository
     {
         private readonly WebServiceContext context;
+        public bool IsReserve { get; set; }
 
         public TeamRepository(WebServiceContext context)
         {
             this.context = context;
+            this.IsReserve = false;
         }
 
         public async Task CreateTeamAsync(Team t)
@@ -71,7 +72,7 @@ namespace web_service.Repositories
 
         public async Task<Team> CreateAndReturnTeam(Team t)
         {
-            
+
             await this.CreateTeamAsync(t);
             var team = await this.FindTeamByNameAndPelada(t.Name, t.PeladaId);
 
@@ -81,10 +82,31 @@ namespace web_service.Repositories
             return null;
         }
 
+        public void CheckReserveBank(int numberAfterComma)
+        {
+            this.IsReserve = (numberAfterComma != 0);
+        }
+
+        public string[] getArrayQuantityTeams(Sport sport, int numberAthletes)
+        {
+            double quantity = 
+                this.getQuantityOfTeams(numberAthletes, sport.NumberPlayersTeam);
+
+            string quantityInString = quantity.ToString();
+
+            return quantityInString.Split('.', System.StringSplitOptions.None);
+        }
+
+        private double getQuantityOfTeams(double numberAthletes, double numberPlayersTeam)
+        {
+            return numberAthletes / numberPlayersTeam;
+        }
+
         private async Task<Team> FindTeamByNameAndPelada(string name, int peladaId)
         {
             return await context.Team
-                                .Where(t => (t.Name == name && t.PeladaId == peladaId)).FirstOrDefaultAsync();
+                        .Where(t => (t.Name == name && t.PeladaId == peladaId))
+                        .FirstOrDefaultAsync();
         }
     }
 }

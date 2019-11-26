@@ -73,8 +73,9 @@ namespace web_service.Repositories
         {
             Stack<Athlete> stackAthletes = new Stack<Athlete>();
             Random r = new Random();
+            int quantityAthletes = athletes.Count;
 
-            for (int h = 0; h < athletes.Count; h++)
+            for (int h = 0; h < quantityAthletes; h++)
             {   
                 int randomIndex = r.Next(0, athletes.Count);
                 
