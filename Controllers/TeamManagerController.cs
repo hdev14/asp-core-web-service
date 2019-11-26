@@ -11,7 +11,7 @@ namespace web_service.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MainController : ControllerBase
+    public class TeamManagerController : ControllerBase
     {
         private readonly SportRepository sportRepository;
         private readonly TeamRepository teamRepository;
@@ -19,7 +19,7 @@ namespace web_service.Controllers
 
         private Stack<Athlete> stackOfAthletes;
 
-        public MainController(
+        public TeamManagerController(
             SportRepository sportRepository,
             TeamRepository teamRepository,
             AthleteRepository athleteRepository)
