@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,15 +83,22 @@ namespace web_service.Repositories
             return null;
         }
 
-        public void CheckReserveBank(int numberAfterComma)
-        {
+        public void CheckReserveBank(string[] arrayOfQuantity)
+        {   
+            int numberAfterComma = 0;
+
+            if (arrayOfQuantity.Length > 1)
+            {
+               numberAfterComma = Convert.ToInt32(arrayOfQuantity[1]);
+            }
+
             this.IsReserve = (numberAfterComma != 0);
         }
 
-        public string[] getArrayQuantityTeams(Sport sport, int numberAthletes)
+        public string[] getArrayQuantityTeams(int numberPlayersTeam, int numberAthletes)
         {
-            double quantity = 
-                this.getQuantityOfTeams(numberAthletes, sport.NumberPlayersTeam);
+            double quantity =
+                this.getQuantityOfTeams(numberAthletes, numberPlayersTeam);
 
             string quantityInString = quantity.ToString();
 

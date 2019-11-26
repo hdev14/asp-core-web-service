@@ -37,34 +37,32 @@ namespace web_service.Controllers
             int numberAthletes = athletes.Count;
             var sport = await sportRepository.FindSportAsync(sportId);
 
-            if (sport == null || this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers))
+            if (!this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers) 
+                || sport == null)
             {
                 return NotFound(new { message = "Parametros inválidos" });
             }
                 
-
             string[] arrayOfQuantity =
-                teamRepository.getArrayQuantityTeams(sport, numberAthletes);
+                teamRepository.getArrayQuantityTeams(sport.NumberPlayersTeam, numberAthletes);
 
+            teamRepository.CheckReserveBank(arrayOfQuantity);
+            
             int quantityOfTeams = Convert.ToInt32(arrayOfQuantity[0]);
-
-            if (arrayOfQuantity.Length > 1)
-            {
-                int numberAfterComma = Convert.ToInt32(arrayOfQuantity[1]);
-                teamRepository.CheckReserveBank(numberAfterComma);
-            }
 
             try
             {
-                List<TeamAthletesView> teamAthletes =
-                    await this.CreateTeamAndAthletes(
-                        athletes, quantityOfTeams, numberAthletes, 
-                                        sport.NumberPlayersTeam, peladaId);
-
+                List<TeamAthletesView> teamAthletes = await this.CreateTeamAndAthletes(
+                                                                athletes, 
+                                                                quantityOfTeams, 
+                                                                numberAthletes, 
+                                                                sport.NumberPlayersTeam, 
+                                                                peladaId
+                                                            );
                 return StatusCode(200, new
                 {
                     teamAthletes = teamAthletes,
-                    listReserve = this.getListReserve()
+                    reserveBank = this.GetReserveBank()
                 });
             }
             catch (Exception e)
@@ -144,22 +142,23 @@ namespace web_service.Controllers
             return athleteNames;
         }
 
-        private List<string> getListReserve()
+        private List<string> GetReserveBank()
         {
-            List<string> listReserve = new List<string>();
-            int quantityBankReserve = stackOfAthletes.Count;
+            List<string> reserveBank = new List<string>();
+            int quantityReserveBank = stackOfAthletes.Count;
+            
             if (teamRepository.IsReserve)
             {
-                for (int h = 0; h < quantityBankReserve; h++)
-                    listReserve.Add(stackOfAthletes.Pop().Name);
+                for (int h = 0; h < quantityReserveBank; h++)
+                    reserveBank.Add(stackOfAthletes.Pop().Name);
             }
 
-            return listReserve;
+            return reserveBank;
         }
 
         private bool checkNumberOfAthletes(int numberAthletes, int numberPlayers)
         {
-            return !(numberAthletes != 0 && numberAthletes >= numberPlayers);
+            return (numberAthletes != 0 && numberAthletes >= numberPlayers);
         }
     }
 }
