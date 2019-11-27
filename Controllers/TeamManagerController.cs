@@ -44,7 +44,7 @@ namespace web_service.Controllers
             }
                 
             string[] arrayOfQuantity =
-                teamRepository.getArrayQuantityTeams(sport.NumberPlayersTeam, numberAthletes);
+                    teamRepository.getArrayQuantityTeams(sport.NumberPlayersTeam, numberAthletes);
 
             teamRepository.CheckReserveBank(arrayOfQuantity);
             
