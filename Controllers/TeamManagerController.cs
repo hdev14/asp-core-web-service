@@ -40,7 +40,7 @@ namespace web_service.Controllers
             if (sport == null
                 || !this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers))
             {
-                return NotFound(new { message = "Parametros inválidos" });
+                return BadRequest(new { message = "Parametros inválidos" });
             }
                 
             string[] arrayOfQuantity =
