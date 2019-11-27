@@ -37,8 +37,8 @@ namespace web_service.Controllers
             int numberAthletes = athletes.Count;
             var sport = await sportRepository.FindSportAsync(sportId);
 
-            if (!this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers) 
-                || sport == null)
+            if (sport == null
+                || !this.checkNumberOfAthletes(numberAthletes, sport.NumberPlayers))
             {
                 return NotFound(new { message = "Parametros inválidos" });
             }
