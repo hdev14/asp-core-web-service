@@ -126,11 +126,11 @@ namespace web_service.Controllers
             return numberAthletesPerTeam;
         }
 
-        private async Task<List<string>> CreateAthletes(int numberAthletes, int teamId)
+        private async Task<List<string>> CreateAthletes(int numberAthletesPerTeam, int teamId)
         {
             List<string> athleteNames = new List<string>();
 
-            for (int j = 0; j < numberAthletes; j++)
+            for (int j = 0; j < numberAthletesPerTeam; j++)
             {
                 var athlete = stackOfAthletes.Pop();
                 athlete.TeamId = teamId;
