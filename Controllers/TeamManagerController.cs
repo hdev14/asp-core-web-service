@@ -100,7 +100,7 @@ namespace web_service.Controllers
 
                 
                 List<string> athleteNames =
-                        await CreateAthletes(athletes, numberAthletesPerTeam, team.Id);
+                        await CreateAthletes(numberAthletesPerTeam, team.Id);
 
                 teamAthletes.Add(new TeamAthletesView
                 {
@@ -126,8 +126,7 @@ namespace web_service.Controllers
             return numberAthletesPerTeam;
         }
 
-        private async Task<List<string>> CreateAthletes(
-                List<Athlete> athletes, int numberAthletes, int teamId)
+        private async Task<List<string>> CreateAthletes(int numberAthletes, int teamId)
         {
             List<string> athleteNames = new List<string>();
 
